@@ -1,9 +1,5 @@
 import React from 'react';
-//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-//import Login from "./container/login";
-//import SignUp from "./container/signup";
 
 function User() {
   return (<Router>

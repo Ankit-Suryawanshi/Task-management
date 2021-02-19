@@ -14,29 +14,41 @@ export default class SignUp extends Component {
 	}
 
 	handleSubmit = (e)=> {
-		this.props.requestSigin(this.state);
 		e.preventDefault();
+		this.props.requestSigin(this.state);
 	}
 
+	componentDidUpdate = (prevProp)=> {
+		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'admin')
+			this.props.history.push('/generate-task')
+		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'user')
+			this.props.history.push('/')	
+	}
+	componentDidMount = (prevProp)=> {
+		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'admin')
+			this.props.history.push('/generate-task')
+		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'user')
+			this.props.history.push('/')
+	}
 
 	render() {
 		return (
-			<>
+			<div className="auth-inner">
 				<nav className="navbar navbar-expand-lg navbar-light fixed-top">
-						<div className="container">
-							<Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
-							<div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-								<ul className="navbar-nav ml-auto">
-									<li className="nav-item">
-										<Link className="nav-link" to={"/sign-in"}>Sign in</Link>
-									</li>
-									<li className="nav-item">
-										<Link className="nav-link" to={"/sign-up"}>Sign up</Link>
-									</li>
-								</ul>
-							</div>
+					<div className="container">
+						<Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
+						<div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+							<ul className="navbar-nav ml-auto">
+								<li className="nav-item">
+									<Link className="nav-link" to={"/sign-in"}>Sign in</Link>
+								</li>
+								<li className="nav-item">
+									<Link className="nav-link" to={"/sign-up"}>Sign up</Link>
+								</li>
+							</ul>
 						</div>
-					</nav>
+					</div>
+				</nav>
 				<form>
 					<h3>Sign Up</h3>
 
@@ -90,7 +102,7 @@ export default class SignUp extends Component {
 						Already registered <a href="/sign-in">sign in?</a>
 					</p>
 				</form>
-			</>
+			</div>
 		);
 	}
 }

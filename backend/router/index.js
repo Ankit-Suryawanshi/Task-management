@@ -9,6 +9,8 @@ router.post('/login', adminController.login);
 
 router.post('/generatetask', adminController.generateTask);
 
-router.get('/taskInfo', adminController.taskInfo);
+router.get('/allTaskInfo', adminController.allTaskInfo);
+
+router.get('/allDeveloperInfo', adminController.allDeveloperInfo);
 
 module.exports = router;

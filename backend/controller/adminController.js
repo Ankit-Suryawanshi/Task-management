@@ -36,12 +36,11 @@ const adminController = {
       }
       res.status(200).json({
         msg: 'New user is reginstered successfully!!!. Please login to continue.'
-      })
+      });
     })
   },
 
   generateTask(req,res) {
-    console.log(req.body);
     const newTask = new Task(req.body);
     newTask.save((err, data)=>{
       if(err) {
@@ -55,20 +54,32 @@ const adminController = {
     })
   },
 
-  taskInfo(req,res) {
-    req.body.created_at = new Date(req.body.created_at);
-    req.body.deadline = new Date(req.body.created_at);
-    const newTask = new Task(req.body);
-    newTask.save((err, data)=>{
-      if(err) {
-        return res.status(400).json({
-          error: err
-        })
-      }
+  async allTaskInfo(req,res) {
+    const sortData = req.query.sort ? JSON.parse(req.query.sort) : {};
+    try {
+      const task = await Task.find({}).sort({[sortData.sortKey]: sortData.sort});
       res.status(200).json({
-        msg: 'New task is reginstered successfully!!!.'
+        taskData:task
       })
-    })
+    } catch (err){
+      return res.status(400).json({
+        error: err
+      })
+    }
+  },
+
+  async allDeveloperInfo(req,res) {
+    const sortData = req.query.sort ? JSON.parse(req.query.sort) : {};
+    try {
+      const task = await User.find({}).sort({[sortData.sortKey]: sortData.sort});
+      res.status(200).json({
+        userData:task
+      })
+    } catch (err){
+      return res.status(400).json({
+        error: err
+      })
+    }
   }
 }
 

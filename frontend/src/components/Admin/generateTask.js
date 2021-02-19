@@ -22,20 +22,24 @@ export default class GenerateTask extends Component {
 
   handleLogout = ()=> {
     localStorage.clear();
-    this.props.history.push('/sign-in')
+    this.props.setUserData({});
+    this.props.history.push('/sign-in');
   }
   
 
 	render() {
 		return (
-      <>
+      <div className="auth-inner">
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
             <div className="container">
               <Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
               <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul className="navbar-nav ml-auto">
                   <li className="nav-item">
-                    <Link className="nav-link" to={"/sign-in"}>Available Task</Link>
+                    <Link className="nav-link" to={"/available-task"}>Available Task</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to={"/show-developer"}>Available Developer</Link>
                   </li>
                   <li className="nav-item">
                     <button type="button" className="btn btn-link nav-link" to={"/sign-up"} onClick={this.handleLogout}>Logout</button>
@@ -111,7 +115,7 @@ export default class GenerateTask extends Component {
 
           <button type="submit" className="btn btn-primary btn-block" onClick={this.handleSubmit}>Generate</button>
         </form>
-      </>
+      </div>
 		);
 	}
 }

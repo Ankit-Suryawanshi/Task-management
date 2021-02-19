@@ -18,15 +18,25 @@ export default class Login extends Component {
 		this.props.requestLogin(this.state);
 		e.preventDefault();
 	}
-	render() {
-		console.log(this.props);
+
+	componentDidUpdate = (prevProp)=> {
 		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'admin')
 			this.props.history.push('/generate-task')
 		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'user')
 			this.props.history.push('/')
-		
+	}
+
+	componentDidMount = (prevProp)=> {
+		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'admin')
+			this.props.history.push('/generate-task')
+		if(this.props.data.rootReducers.userData && this.props.data.rootReducers.userData.role === 'user')
+			this.props.history.push('/')
+	}
+
+	render() {
+		console.log(this.props);
 		return (
-			<>
+			<div className="auth-inner">
 				<nav className="navbar navbar-expand-lg navbar-light fixed-top">
 					<div className="container">
 						<Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
@@ -67,7 +77,7 @@ export default class Login extends Component {
 						Forgot <a href='/'>password?</a>
 					</p>
 				</form>
-			</>
+			</div>
 		);
 	}
 }
