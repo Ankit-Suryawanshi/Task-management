@@ -1,7 +1,8 @@
 import { all, put, takeEvery } from 'redux-saga/effects';
 import { 
   REQUEST_SIGIN, REQUEST_LOGIN,
-  REQUEST_GENERATE_TASK, 
+  REQUEST_GENERATE_TASK,
+  REQUEST_DELETE_TASK, 
   setUserData, 
   REQUEST_ALL_TASK,
   setAllTask,
@@ -32,7 +33,7 @@ function* watchRequestLogin() {
 function* watchRequestSigin() {
   yield takeEvery(REQUEST_SIGIN, function* ({ item }){
     try {
-      const response = yield fetch('http://localhost:3001/api/signup', {
+      yield fetch('http://localhost:3001/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,6 +110,24 @@ function* watchRequestAllDeveloper() {
   })
 }
 
+function  *watchRequestDeleteTask() {
+  yield takeEvery(REQUEST_DELETE_TASK, function * ({item}) {
+    try{
+      console.log(item);
+      const response = yield fetch(`http://localhost:3001/api/deleteTask?id=${item}`, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      response.json().then(res=>alert(res.msg));
+    } catch (err) {
+      console.log(err);
+    }
+    
+  })
+}
+
 export default function* rootSaga () {
   yield all([
     watchRequestLogin(),
@@ -116,5 +135,6 @@ export default function* rootSaga () {
     watchRequestGenerateTask(),
     watchRequestAllTask(),
     watchRequestAllDeveloper(),
+    watchRequestDeleteTask(),
   ]);
 }

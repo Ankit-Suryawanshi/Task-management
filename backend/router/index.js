@@ -13,4 +13,6 @@ router.get('/allTaskInfo', adminController.allTaskInfo);
 
 router.get('/allDeveloperInfo', adminController.allDeveloperInfo);
 
+router.delete('/deleteTask', adminController.deleteTask);
+
 module.exports = router;

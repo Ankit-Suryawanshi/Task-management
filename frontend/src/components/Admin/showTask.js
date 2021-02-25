@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Button, Modal } from 'react-bootstrap';
+import CommonNavSection from "../commonNavSection";
 import moment from 'moment';
 import './index.css';
 
@@ -8,6 +9,8 @@ export default class GenerateTask extends Component {
   state = {
 		searchBy:'',
     sortBy:'asc',
+    openPopover: '',
+    onMouseOverPointer: false,
 	};
 
   componentDidMount = ()=> {
@@ -19,9 +22,24 @@ export default class GenerateTask extends Component {
 	}
 
   handleLogout = ()=> {
-    localStorage.clear();
+    localStorage.clear(); 
     this.props.setUserData({});
     this.props.history.push('/sign-in');
+  }
+
+  handlePopupColse = ()=> {
+    this.setState({ openPopover: ''});
+  }
+
+  handleDeleteTask = (id) => {
+    this.props.requestDeleteTask(id);
+    this.setState({ openPopover: ''});  
+    window.location.reload(false);
+  }
+
+  handleEditTask = () => {
+    this.props.history.push('/generate-task', this.state.openPopover);
+    this.setState({ openPopover: ''});
   }
 
 	render() {
@@ -33,26 +51,15 @@ export default class GenerateTask extends Component {
       this.props.requestAllTask({sort: this.state.sortBy === 'asc' ? -1 : 1, sortKey: key});
       this.setState({sortBy: this.state.sortBy === 'asc' ? 'desc' : 'asc'});
     }
+    const commonNavLink = {
+      linkOne: '/generate-task',
+      pathOne: 'Genetate Task',
+      linkTwo: '/show-developer',
+      pathTwo: 'Available Developer',
+    }
 		return (
       <div className="auth-innertable">
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-          <div className="container">
-            <Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/generate-task"}>Genetate Task</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/show-developer"}>Available Developer</Link>
-                </li>
-                <li className="nav-item">
-                  <button type="button" className="btn btn-link nav-link" to={"/sign-up"} onClick={this.handleLogout}>Logout</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <CommonNavSection commonNavLink={commonNavLink} handleLogout={this.handleLogout}/>
         <div className="row">
           <div className="col-6">
             <div id="example_filter" className="dataTables_filter">
@@ -73,21 +80,61 @@ export default class GenerateTask extends Component {
               </tr>
             </thead>
             <tbody>
-            {
-              dataToMap.map((d)=> {
-                return <tr onClick={()=>console.log('Row in clicked')}>
-                  <td>{d.title}</td>
-                  <td>{d.status}</td>
-                  <td>{d.assigned_to}</td>
-                  <td>{d.description}</td>
-                  <td>{moment(d.created_at).utc().format('MM/DD/YYYY')}</td>
-                  <td>{moment(d.deadline).utc().format('MM/DD/YYYY')}</td>
-                </tr>
-              })
-            }
+              { dataToMap.map((d)=> {
+                  return <tr className={this.state.onMouseOverPointer ? "showPointer" : ''} onClick={()=>this.setState({openPopover: d})} onMouseOver={()=>this.setState({onMouseOverPointer : true})} onMouseOut={()=>this.setState({onMouseOverPointer : false})} >
+                    <td className="tableColumeWidth">{d.title}</td>
+                    <td className="tableColumeWidth">{d.status}</td>
+                    <td className="tableColumeWidth">{d.assigned_to}</td>
+                    <td className="tableColumeWidth">{d.description}</td>
+                    <td className="tableColumeWidth">{moment(d.created_at).utc().format('DD/MM/YYYY')}</td>
+                    <td className="tableColumeWidth">{moment(d.deadline).utc().format('DD/MM/YYYY')}</td>
+                  </tr>
+                })
+              }
             </tbody>
           </table>
         </div>
+        <div className="container">
+          <Modal size="lg" show={this.state.openPopover} onHide={this.handlePopupColse}>
+            <Modal.Header closeButton>
+              <Modal.Title>{this.state.openPopover.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <h5>Description</h5>
+              {this.state.openPopover.description}
+              <div className="mt-3">
+                <h5>Other Details</h5>
+                <div className="row">
+                  <div className="col-6">
+                    <span>Assign To : </span> <span>{this.state.openPopover.assigned_to}</span>
+                  </div>
+                  <div className="col-6">
+                    <span>Status : </span> <span>{this.state.openPopover.status}</span>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <span>Created At : </span> <span>{moment(this.state.openPopover.created_at).utc().format('DD/MM/YYYY')}</span>
+                  </div>
+                  <div className="col-6">
+                    <span>Deadline : </span> <span>{moment(this.state.openPopover.deadline).utc().format('DD/MM/YYYY')}</span>
+                  </div>
+                </div>
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handlePopupColse}>
+                Close
+              </Button>
+              <Button variant="success" onClick={this.handleEditTask}>
+                Edit
+              </Button>
+              <Button variant="danger" onClick={()=>this.handleDeleteTask(this.state.openPopover._id)}>
+                Delete
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>     
       </div>
 		);
 	}

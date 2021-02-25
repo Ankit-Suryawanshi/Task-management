@@ -41,17 +41,29 @@ const adminController = {
   },
 
   generateTask(req,res) {
-    const newTask = new Task(req.body);
-    newTask.save((err, data)=>{
-      if(err) {
-        return res.status(400).json({
-          error: err
+    if(req.body.objectId) {
+      Task.updateOne({_id: req.body.objectId}, req.body,(err,data)=> {
+        if(err) {
+          throw err;
+        }
+        res.status(200).json({
+          msg: "The requested task has been Updated",
+          data
         })
-      }
-      res.status(200).json({
-        msg: 'New Task is reginstered successfully!!!.'
-      })
-    })
+      });
+    } else {
+      const newTask = new Task(req.body);
+      newTask.save((err, data)=>{
+        if(err) {
+          return res.status(400).json({
+            error: err
+          })
+        }
+        res.status(200).json({
+          msg: 'New Task is reginstered successfully!!!.'
+        })
+      });
+    }
   },
 
   async allTaskInfo(req,res) {
@@ -80,6 +92,18 @@ const adminController = {
         error: err
       })
     }
+  },
+
+  deleteTask(req,res) {
+    Task.deleteOne({_id: req.query.id}, (err, data)=>{
+      if(err) {
+        throw err;
+      }
+      res.status(200).json({
+        msg: "The requested task has been deleted",
+        data
+      })
+    });
   }
 }
 

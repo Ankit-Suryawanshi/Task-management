@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import CommonNavSection from "./commonNavSection";
 export default class SignUp extends Component {
 	state = {
 		name:'',
@@ -32,23 +32,15 @@ export default class SignUp extends Component {
 	}
 
 	render() {
+		const commonNavLink = {
+      linkOne: '/sign-in',
+      pathOne: 'Sign in',
+      linkTwo: '/sign-up',
+      pathTwo: 'Sign up',
+    }
 		return (
 			<div className="auth-inner">
-				<nav className="navbar navbar-expand-lg navbar-light fixed-top">
-					<div className="container">
-						<Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
-						<div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-							<ul className="navbar-nav ml-auto">
-								<li className="nav-item">
-									<Link className="nav-link" to={"/sign-in"}>Sign in</Link>
-								</li>
-								<li className="nav-item">
-									<Link className="nav-link" to={"/sign-up"}>Sign up</Link>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</nav>
+				<CommonNavSection commonNavLink={commonNavLink} noHandleLogout/>
 				<form>
 					<h3>Sign Up</h3>
 

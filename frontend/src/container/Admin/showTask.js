@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { requestAllTask, setUserData, } from '../../actions';
+import { requestAllTask, requestDeleteTask, setUserData, } from '../../actions';
 import ShowTask from "../../components/Admin/showTask";
 
 const mapStateToProps = (state, ownProps) => ({
@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   requestAllTask,
+  requestDeleteTask,
   setUserData,
 }
 

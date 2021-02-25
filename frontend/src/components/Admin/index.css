@@ -53,3 +53,14 @@
   background-color: #141517;
   color: aqua; 
 }
+
+.tableColumeWidth {
+  max-width: 150px;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+}
+
+.showPointer {
+  cursor: pointer;
+}

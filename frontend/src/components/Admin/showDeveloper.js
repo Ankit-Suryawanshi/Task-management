@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import moment from 'moment';
+import CommonNavSection from "../commonNavSection";
 import './index.css';
 
 export default class ShowDeveloper  extends Component {
@@ -33,26 +32,15 @@ export default class ShowDeveloper  extends Component {
       this.props.requestAllDeveloper({sort: this.state.sortBy === 'asc' ? -1 : 1, sortKey: key});
       this.setState({sortBy: this.state.sortBy === 'asc' ? 'desc' : 'asc'});
     }
+    const commonNavLink = {
+      linkOne: '/generate-task',
+      pathOne: 'Genetate Task',
+      linkTwo: '/available-task',
+      pathTwo: 'Available Task',
+    }
 		return (
       <div className="auth-innertable">
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-          <div className="container">
-            <Link className="navbar-brand" to={"/sign-in"}>Test management applicatoin</Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/generate-task"}>Genetate Task</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to={"/available-task"}>Available Task</Link>
-                </li>
-                <li className="nav-item">
-                  <button type="button" className="btn btn-link nav-link" to={"/sign-up"} onClick={this.handleLogout}>Logout</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <CommonNavSection commonNavLink={commonNavLink} handleLogout={this.handleLogout}/>
         <div className="row">
           <div className="col-6">
             <div id="example_filter" className="dataTables_filter">
@@ -71,16 +59,15 @@ export default class ShowDeveloper  extends Component {
               </tr>
             </thead>
             <tbody>
-            {
-              dataToMap.map((d)=> {
-                return <tr>
-                  <td>{d.name}</td>
-                  <td>{d.email}</td>
-                  <td>{d.contact}</td>
-                  <td>{d.role}</td>
-                </tr>
-              })
-            }
+              { dataToMap.map((d)=> {
+                  return <tr>
+                    <td>{d.name}</td>
+                    <td>{d.email}</td>
+                    <td>{d.contact}</td>
+                    <td>{d.role}</td>
+                  </tr>
+                })
+              }
             </tbody>
           </table>
         </div>
